@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Route } from 'react-router-dom';
 import { connect } from 'react-redux';
 
@@ -12,31 +12,25 @@ import { fetchCollectionsStart } from '../../redux/shop/shop.actions';
  * telling react router dom that :categoryId is the param that we are linked to
  * @param match Automically passed as props as the parent in App.js is a Route
  */
-class ShopPage extends React.Component {
-  //componentDidMount is only called after the initial render
-  componentDidMount() {
-    const { fetchCollectionsStart } = this.props;
+const ShopPage = ({ fetchCollectionsStart, match }) => {
+  useEffect(() => {
     fetchCollectionsStart();
-  }
+  }, [fetchCollectionsStart]);
 
   //render in Route is a function where parameters of it is what the component will receive
-  render() {
-    const { match } = this.props;
-
-    return (
-      <div className='shop-page'>
-        <Route 
-          exact 
-          path={`${match.path}`} 
-          component={CollectionsOverviewContainer}         
-        />
-        <Route
-          path={`${match.path}/:collectionId`}
-          component={CollectionPageContainer}
-        />
-      </div>
-    );
-  }
+  return (
+    <div className='shop-page'>
+      <Route 
+        exact 
+        path={`${match.path}`} 
+        component={CollectionsOverviewContainer}         
+      />
+      <Route
+        path={`${match.path}/:collectionId`}
+        component={CollectionPageContainer}
+      />
+    </div>
+  );
 }
 
 const mapDispatchToProps = dispatch => ({
